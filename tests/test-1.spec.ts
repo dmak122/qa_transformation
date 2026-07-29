@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test('Checking Title img', async ({ page }) => {
+  //duplicated code should be extracted to the separate method
   await page.goto('https://demoqa.com/');
   await expect(
+    
   page.locator('img[src="/assets/Toolsqa-DZdwt2ul.jpg"]')).toBeVisible();
 
 });
@@ -35,4 +37,6 @@ test('Registration', async ({ page }) => {
   await page.fill('#city', 'City' );
 
   await page.click("text=Send");
+
+  //no verifications for the actions
 });

@@ -4,12 +4,14 @@ import { test, expect } from '@playwright/test';
 
     const userEmail = 'dima@g00gle.com';
     
+    //Create method for login - base class
     await page.goto('https://demoqa.com/webtables');
 
     // Open a form
     await page.locator('#addNewRecordButton').click();
 
     // Fill up the form
+    //create a data set in helper and use it for both tests (this one and previous)
     await page.getByPlaceholder('First Name').fill('Dima');
     await page.locator('.mr-sm-2.form-control#lastName').fill('Makarov');
     await page.locator('#userEmail').fill(userEmail);
@@ -41,6 +43,7 @@ import { test, expect } from '@playwright/test';
     const userEmail = 'olenag@test.com';
     const userNumber = '1234567890';
 
+    //create a method with step by step opening necessary page
     await page.goto('https://demoqa.com/automation-practice-form');
 
     // Basic text fields
@@ -49,6 +52,7 @@ import { test, expect } from '@playwright/test';
     await page.locator('#userEmail').fill(userEmail);
 
     // Radio buttons 
+    // better to use getByRole('radio', 'Female')
     await page.getByText('Female', { exact: true }).click();
     
     // Phone number
@@ -60,9 +64,11 @@ import { test, expect } from '@playwright/test';
     await page.locator('.subjects-auto-complete__menu').getByText('Maths').click();
 
     // Checkbox
+    // better to use getByRole('checkbox', 'Reading')
     await page.getByText('Reading').click();
 
     // Submit the form
+    // better to use getByRole('button', 'Submit')
     await page.locator('#submit').click({ force: true });
 
     // Check results
@@ -71,8 +77,9 @@ import { test, expect } from '@playwright/test';
     await expect(modal.locator('.modal-header')).toHaveText('Thanks for submitting the form');
     
     // Checking via variables
-    const resultTable = modal.locator('.table-responsive');
-    await expect(resultTable).toContainText(`${firstName} ${lastName}`);
-    await expect(resultTable).toContainText(userEmail);
-    await expect(resultTable).toContainText('Maths');
+    //looks like .table-responsive is a part of modal try to use modal itself
+   // const resultTable = modal.locator('.table-responsive');
+    await expect(modal).toContainText(`${firstName} ${lastName}`);
+    await expect(modal).toContainText(userEmail);
+    await expect(modal).toContainText('Maths');
   });

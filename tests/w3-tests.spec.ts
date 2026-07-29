@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 test('Checking Contained text', async ({ page }) => {
+  //duplicated code should be extracted to the separate method
   await page.goto('https://demoqa.com/');
+  //looks like this text will be on every page, for verification main page shoyld be somthis else 
+  // e.g. alt="Selenium Online Training"
   await expect(page.locator('span')).toContainText('© 2013-2026 TOOLSQA.COM | ALL RIGHTS RESERVED.');
 
 });
 
+//duplicated tests with test-1.spec.ts
 test('Checking page elements urls', async ({ page }) => {
   await page.goto('https://demoqa.com/');
   await expect(page.getByRole('link', { name: 'Elements' })).toHaveAttribute('href', '/elements');
@@ -19,7 +23,8 @@ test('Checking page elements urls', async ({ page }) => {
 
 test('Filling up Text Box', async ({ page }) => {
     await page.goto('https://demoqa.com/');
-
+//create a general method with dynamic varaible 
+//duplicated code
     await page.locator('a[href="/elements"]').click();
     await page.click('#item-0')
 
@@ -42,6 +47,8 @@ test('Filling up Text Box', async ({ page }) => {
     await page.locator('a[href="/elements"]').click();
     await page.getByText('Check Box').click();
     //await page.click('#item-1')
+
+    //.rc-tree-switcher.rc-tree-switcher_close - why? .rc-tree-switcher enough for locator by css
     await page.click('.rc-tree-switcher.rc-tree-switcher_close')
     await page.getByRole('checkbox', { name: 'Select Documents' }).click();
     //await page.locator('div:has-text("Documents") .rc-tree-checkbox').click();
