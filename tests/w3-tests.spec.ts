@@ -1,56 +1,46 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { HomePage } from '../pages/home.page';
+import { TextBoxPage } from '../pages/text-box.page';
+import { CheckBoxPage } from '../pages/checkbox.page';
 
-test('Checking Contained text', async ({ page }) => {
-  //duplicated code should be extracted to the separate method
-  await page.goto('https://demoqa.com/');
-  //looks like this text will be on every page, for verification main page shoyld be somthis else 
-  // e.g. alt="Selenium Online Training"
-  await expect(page.locator('span')).toContainText('© 2013-2026 TOOLSQA.COM | ALL RIGHTS RESERVED.');
+test.describe('Home Page functionality', () => {
+  let homePage: HomePage;
 
-});
+  test.beforeEach(async ({ page }) => {
+    homePage = new HomePage(page);
+    await homePage.open();
+  });
 
-//duplicated tests with test-1.spec.ts
-test('Checking page elements urls', async ({ page }) => {
-  await page.goto('https://demoqa.com/');
-  await expect(page.getByRole('link', { name: 'Elements' })).toHaveAttribute('href', '/elements');
-  await expect(page.getByRole('link', { name: 'Forms' })).toHaveAttribute('href', '/forms');
-  await expect(page.getByRole('link', { name: 'Alerts, Frame & Windows' })).toHaveAttribute('href', '/alertsWindows');
-  await expect(page.getByRole('link', { name: 'Widgets' })).toHaveAttribute('href', '/widgets');
-  await expect(page.getByRole('link', { name: 'Interactions' })).toHaveAttribute('href', '/interaction');
-  await expect(page.getByRole('link', { name: 'Book Store Application' })).toHaveAttribute('href', '/books');
+  test('Checking Contained text', async () => {
+    await homePage.checkCopyright();
+  });
 
+  test('Checking page elements urls', async () => {
+    await homePage.checkCategoryLinks();
+  });
 });
 
 test('Filling up Text Box', async ({ page }) => {
-    await page.goto('https://demoqa.com/');
-//create a general method with dynamic varaible 
-//duplicated code
-    await page.locator('a[href="/elements"]').click();
-    await page.click('#item-0')
+  const textBoxPage = new TextBoxPage(page);
 
-    await page.locator('#userName').fill('Carl Woldberg');
-    await page.locator('#userEmail').fill('test3434@gogo.com');
-    await page.locator('#currentAddress').fill('Sunny av., 78, apt. 23');
-    await page.locator('#permanentAddress').fill('Moon str,, 1 apt. 23');
+  await textBoxPage.open();
+  await textBoxPage.fillForm(
+    'Carl Woldberg',
+    'test3434@gogo.com',
+    'Sunny av., 78, apt. 23',
+    'Moon str,, 1 apt. 23'
+  );
+  await textBoxPage.submit();
+  await textBoxPage.verifyOutput('Carl Woldberg', 'test3434@gogo.com');
+});
 
-    await page.locator('#submit').click();
+test('Checking Check Box', async ({ page }) => {
+  const checkBoxPage = new CheckBoxPage(page);
 
-    await expect(page.locator('#name')).toContainText('Name:Carl Woldberg');
-    await expect(page.locator('#email')).toContainText('Email:test3434@gogo.com');
-    //await expect(page.locator('#currentAddress')).toContainText('Current Address :Sunny av., 78, apt. 23');
-    //await expect(page.locator('#permanentAddress')).toContainText('Permanent Address :Moon str,, 1 apt. 23');
-  });
-
-  test('Checking Check Box', async ({ page }) => {
-    await page.goto('https://demoqa.com/');
-
-    await page.locator('a[href="/elements"]').click();
-    await page.getByText('Check Box').click();
-    //await page.click('#item-1')
-
-    //.rc-tree-switcher.rc-tree-switcher_close - why? .rc-tree-switcher enough for locator by css
-    await page.click('.rc-tree-switcher.rc-tree-switcher_close')
-    await page.getByRole('checkbox', { name: 'Select Documents' }).click();
-    //await page.locator('div:has-text("Documents") .rc-tree-checkbox').click();
-    await expect(page.locator('#result')).toContainText('You have selected :documentsworkspaceofficereactangularveupublicprivateclassifiedgeneral');
-  });
+  await checkBoxPage.open();
+  await checkBoxPage.expandFolder();
+  await checkBoxPage.selectDocuments();
+  await checkBoxPage.checkResultText(
+    'You have selected :documentsworkspaceofficereactangularveupublicprivateclassifiedgeneral'
+  );
+});
