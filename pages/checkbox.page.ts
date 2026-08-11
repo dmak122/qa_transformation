@@ -12,7 +12,6 @@ export class CheckBoxPage extends BasePage {
     this.documentsCheckbox = page.getByRole('checkbox', { name: 'Select Documents' });
     this.resultContainer = page.locator('#result');
   }
-
   async open() {
     await this.navigateTo('/checkbox');
   }

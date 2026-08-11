@@ -30,9 +30,14 @@ export class PracticeFormPage extends BasePage {
     this.resultTable = page.locator('.table-responsive');
   }
 
-  async open(): Promise<void> {
-    await this.navigateTo('/automation-practice-form');
-  }
+//  async open(): Promise<void> {
+//     await this.navigateTo('/automation-practice-form');
+//   }
+
+  async open() {
+      await this.navigateToSubMenu('Forms', 'Practice Form');
+    }
+
 
   async fillForm(student: Student): Promise<void> {
     await this.firstNameInput.fill(student.firstName);

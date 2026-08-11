@@ -21,7 +21,6 @@ export class TextBoxPage extends BasePage {
     this.submitButton = page.getByRole('button', { name: 'Submit' });
     this.outputContainer = page.locator('#output');
   }
-
   async open() {
     await this.navigateTo('/text-box');
   }

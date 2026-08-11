@@ -3,9 +3,8 @@ import { Student } from '../models/student';
 import { PracticeFormPage } from '../pages/practice-form.page';
 
 test.describe('Practice Form Validation', () => {
-  test('Student registration with filling up all the fileds', async ({ page }) => {
-    
-    // 1. Data preparation (Test object)
+
+    // Data preparation (Test object)
     const student = new Student(
       'Ivan',
       'Biliy',
@@ -19,15 +18,29 @@ test.describe('Practice Form Validation', () => {
       'Delhi'
     );
 
-    // 2. Initializing the page object
+  test('Student registration with filling up all the fileds', async ({ page }) => {
+    
+    // 1. Initializing the page object
     const practiceFormPage = new PracticeFormPage(page);
 
-    // 3. Executing test steps through high-level methods
+    // 2. Executing test steps through high-level methods
     await practiceFormPage.open();
     await practiceFormPage.fillForm(student);
     await practiceFormPage.submit();
 
-    // 4. Verification of final data
+    // 3. Verification of final data
     await practiceFormPage.verifySubmittedData(student);
   });
+
+
+  test('Student registration with adding up a file and date', async ({ page }) => {
+  
+    const practiceFormPage = new PracticeFormPage(page);
+
+    await practiceFormPage.open();
+    await practiceFormPage.fillForm(student);
+    await practiceFormPage.submit();
+
+
+});
 });
