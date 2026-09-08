@@ -9,9 +9,11 @@ export class TableComponent {
     this.page = page;
 
     // Target the main wrapper containing the books table
+    // explaine this locator
     this.table = page.locator('.books-wrapper table, .profile-wrapper table').first();
 
     // Chain locator: search tr STRICTLY inside this.table
+    // why do we need to use this.rows in the constructor? we can use it in the methods directly
     this.rows = this.table.locator('tbody tr');
   }
 

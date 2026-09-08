@@ -25,6 +25,7 @@ export class ProfilePage extends BasePage {
   }
 
   // Opens profile page directly
+  //
   async navigate(): Promise<void> {
     await this.page.goto('https://demoqa.com/profile');
   }

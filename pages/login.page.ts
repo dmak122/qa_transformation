@@ -13,7 +13,9 @@ export class LoginPage extends BasePage {
     this.loginButton = page.locator('#login');
   }
 
+  // looks like this is a bad habbit to hardcode the URL in the page object, it would be better to as manual user goes
   // Opens login page directly
+  //in base page we have the same method, why do we need this one?
   async navigate(): Promise<void> {
     await this.page.goto('https://demoqa.com/login');
   }

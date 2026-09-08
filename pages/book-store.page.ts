@@ -24,6 +24,7 @@ export class BookStorePage extends BasePage {
     this.backToStoreButton = page.getByRole('button', { name: 'Back To Book Store' });
   }
 
+  // looks like this is a bad habbit to hardcode the URL in the page object, it would be better to go as manual user goes
   // Opens book store page directly
   async navigate(): Promise<void> {
     await this.page.goto('https://demoqa.com/books');
