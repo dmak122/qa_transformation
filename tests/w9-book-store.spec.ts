@@ -45,12 +45,12 @@ test.describe('Book Store Application - E2E Flow', () => {
       await profilePage.search.search(targetBook);
       //create several times the same variable, create it once and reuse it
       bookRow = profilePage.table.getRowByTitle(targetBook);
-      // pretty the same verification as next one, except method isBookRowVisible(true/false)
+      // pretty the same verification as next one, except method isElementVisible('locator', state=true/false)
       await expect(bookRow).toBeVisible();
     });
 
     await test.step('Delete book from collection and confirm removal', async () => {
-      // explaine how it works, if it works in this case will it work if we declare this variable before test?
+      
       bookRow = profilePage.table.getRowByTitle(targetBook);
       await profilePage.table.deleteBookByTitle(targetBook);
       await profilePage.confirmDeleteModalButton.click();
@@ -139,7 +139,6 @@ test.describe('Book Store Application - E2E Flow', () => {
     });
 
     await test.step('Click on the book title to view details', async () => {
-      //
       await bookStorePage.table.clickBookTitle(targetBook);
     });
 

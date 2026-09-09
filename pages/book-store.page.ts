@@ -30,7 +30,7 @@ export class BookStorePage extends BasePage {
     await this.page.goto('https://demoqa.com/books');
   }
 
-  // Adds currently opened book to collection and handles native browser alert
+  // Adds currently opened book to collection and handles native browser alertf
   async addCurrentBookToCollection(): Promise<void> {
     // Set up dialog handler before triggering action
     this.page.once('dialog', async (dialog) => {

@@ -12,9 +12,6 @@ export class BasePage {
   
     await this.page.goto('https://demoqa.com/');
 
-    /*
-    *await this.page.locator('.card').filter({ hasText: categoryName }).click(); - why we need "const categoryCard"?
-    */
     const categoryCard = this.page.locator('.card').filter({ hasText: categoryName });
     await categoryCard.click();
 
@@ -23,7 +20,7 @@ export class BasePage {
   }
 
   // Navigate by URL
-  //incorrect navagation
+  //incorrect navigation
   async navigateTo(path: string) {
     await this.page.goto(`https://demoqa.com${path}`);
   }
