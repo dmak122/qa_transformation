@@ -5,9 +5,13 @@ import { ProfilePage } from '../pages/profile.page';
 
 test.describe('Book Store Application - E2E Flow', () => {
   // Credentials and test data
-  const username = 'BookLover';
-  const password = 'Password123!';
+  const username = 'BookLover1';
+  const password = 'Password1234!';
   const targetBook = 'Git Pocket Guide';
+  const searchKeyword = 'Learning JavaScript';
+  const otherBookTitle = 'Git Pocket Guide';
+  const nonExistentBook = 'NonExistentBook12345';
+
 
   // Page Object declarations at the suite level
   let loginPage: LoginPage;
@@ -28,54 +32,52 @@ test.describe('Book Store Application - E2E Flow', () => {
     });
 
     await test.step('Search and add book to collection', async () => {
-      await bookStorePage.navigate();
+      await bookStorePage.clickSidebarMenu('Book Store');
       await bookStorePage.search.search(targetBook);
       await bookStorePage.table.clickBookTitle(targetBook);
       await bookStorePage.addCurrentBookToCollection();
     });
 
     await test.step('Verify book exists in Profile collection', async () => {
-      await profilePage.navigate();
+      await profilePage.clickSidebarMenu('Profile');
       await profilePage.search.search(targetBook);
       const bookRow = profilePage.table.getRowByTitle(targetBook);
-      await expect(bookRow).toBeVisible();
+      await profilePage.verifyElementVisibility(bookRow, true);
     });
 
     await test.step('Delete book from collection and confirm removal', async () => {
       const bookRow = profilePage.table.getRowByTitle(targetBook);
       await profilePage.table.deleteBookByTitle(targetBook);
       await profilePage.confirmDeleteModalButton.click();
-      await expect(bookRow).toBeHidden();
+      await profilePage.verifyElementVisibility(bookRow, false);
     });
   });
 
-  test('User can clear the entire book collection from the profile', async () => {
+test('User can clear the entire book collection from the profile', async () => {
     await test.step('Login to the system', async () => {
       await loginPage.navigate();
       await loginPage.login(username, password);
     });
 
     await test.step('Add a book to ensure the collection is not empty', async () => {
-      await bookStorePage.navigate();
+      await bookStorePage.clickSidebarMenu('Book Store');
       await bookStorePage.search.search(targetBook);
       await bookStorePage.table.clickBookTitle(targetBook);
       await bookStorePage.addCurrentBookToCollection();
     });
 
     await test.step('Go to profile and use the bulk delete feature', async () => {
-      await profilePage.navigate();
+      await profilePage.clickSidebarMenu('Profile');
       await profilePage.deleteAllBooks();
     });
 
     await test.step('Verify the table no longer contains the added book', async () => {
       const bookRow = profilePage.table.getRowByTitle(targetBook);
-      await expect(bookRow).toBeHidden();
+      await profilePage.verifyElementVisibility(bookRow, false);
     });
   });
 
   test('User can filter books using search in the Book Store', async () => {
-    const searchKeyword = 'Learning JavaScript';
-    const otherBookTitle = 'Git Pocket Guide';
 
     await test.step('Open book store directly (guest user)', async () => {
       await bookStorePage.navigate();
@@ -89,13 +91,12 @@ test.describe('Book Store Application - E2E Flow', () => {
       const matchingRow = bookStorePage.table.getRowByTitle(searchKeyword);
       const hiddenRow = bookStorePage.table.getRowByTitle(otherBookTitle);
 
-      await expect(matchingRow).toBeVisible();
-      await expect(hiddenRow).toBeHidden();
+      await profilePage.verifyElementVisibility(matchingRow, true);
+      await profilePage.verifyElementVisibility(hiddenRow, false);
     });
   });
 
   test('Search for a non-existent book returns empty results', async () => {
-    const nonExistentBook = 'NonExistentBook12345';
 
     await test.step('Open book store', async () => {
       await bookStorePage.navigate();
@@ -107,7 +108,7 @@ test.describe('Book Store Application - E2E Flow', () => {
 
     await test.step('Verify the table row for this book is hidden', async () => {
       const row = bookStorePage.table.getRowByTitle(nonExistentBook);
-      await expect(row).toBeHidden();
+      await bookStorePage.verifyElementVisibility(row, false);
     });
   });
 
@@ -126,7 +127,7 @@ test.describe('Book Store Application - E2E Flow', () => {
 
     await test.step('Navigate back to the store and verify table is visible', async () => {
       await bookStorePage.backToStoreButton.click();
-      await expect(bookStorePage.table.table).toBeVisible();
+      await bookStorePage.verifyElementVisibility(bookStorePage.table.table, true);
     });
   });
 });

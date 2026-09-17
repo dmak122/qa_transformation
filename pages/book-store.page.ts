@@ -26,7 +26,7 @@ export class BookStorePage extends BasePage {
 
   // Opens book store page directly
   async navigate(): Promise<void> {
-    await this.page.goto('https://demoqa.com/books');
+    await this.page.goto('/books');
   }
 
   // Adds currently opened book to collection and handles native browser alert

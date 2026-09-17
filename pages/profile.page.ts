@@ -26,12 +26,17 @@ export class ProfilePage extends BasePage {
 
   // Opens profile page directly
   async navigate(): Promise<void> {
-    await this.page.goto('https://demoqa.com/profile');
+    await this.page.goto('/profile');
   }
 
   // Deletes all books from user collection via confirmation modal
   async deleteAllBooks(): Promise<void> {
-    await this.deleteAllBooksButton.click();
-    await this.confirmDeleteModalButton.click();
+    // Open confirmation modal
+    await this.deleteAllBooksButton.scrollIntoViewIfNeeded();
+    await this.deleteAllBooksButton.click({ force: true });
+
+    // Confirm deletion inside modal (Playwright will auto-dismiss the native alert)
+    await this.confirmDeleteModalButton.waitFor({ state: 'visible' });
+    await this.confirmDeleteModalButton.click({ force: true });
   }
 }

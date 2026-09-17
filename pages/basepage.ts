@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
@@ -19,9 +19,16 @@ export class BasePage {
     await menuItem.click();
   }
 
-  // Navigate by URL
+// Navigate by relative path using baseURL
   async navigateTo(path: string) {
-    await this.page.goto(`https://demoqa.com${path}`);
+    await this.page.goto(path);
+  }
+
+  // Navigate via sidebar UI without reloads
+  async clickSidebarMenu(menuName: string) {
+    const menuItem = this.page.locator('.left-pannel').getByText(menuName, { exact: true });
+    await menuItem.scrollIntoViewIfNeeded();
+    await menuItem.click();
   }
 
   async getTitle(): Promise<string> {
@@ -30,5 +37,13 @@ export class BasePage {
 
   async verifyUrlContains(substring: string) {
     await expect(this.page).toHaveURL(new RegExp(substring));
+  }
+
+  async verifyElementVisibility(locator: Locator, isVisible: boolean): Promise<void> {
+    if (isVisible) {
+      await expect(locator).toBeVisible();
+    } else {
+      await expect(locator).toBeHidden();
+    }
   }
 }

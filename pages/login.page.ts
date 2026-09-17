@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { BasePage } from './basepage';
 
 export class LoginPage extends BasePage {
@@ -15,15 +15,19 @@ export class LoginPage extends BasePage {
 
   // Opens login page directly
   async navigate(): Promise<void> {
-    await this.page.goto('https://demoqa.com/login');
+    await this.page.goto('/login');
   }
 
   // Performs user authentication flow
   async login(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
-    await this.loginButton.click();
-    // Wait for response or redirect to confirm authentication finished
-    await this.page.waitForURL('**/profile'); // DemoQA redirects to /profile on success
+
+    // Scroll button into view and force click to prevent ad overlay blockage
+    await this.loginButton.scrollIntoViewIfNeeded();
+    await this.loginButton.click({ force: true });
+
+    // Assert authentication by verifying user profile element state in DOM
+    await expect(this.page.locator('#userName-value')).toBeVisible();
   }
 }
