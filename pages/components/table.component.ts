@@ -9,6 +9,7 @@ export class TableComponent {
     this.page = page;
 
     // Target the main wrapper containing the books table
+    // explaine this locator
     this.table = page.locator('.books-wrapper table, .profile-wrapper table').first();
 
     // Chain locator: search tr STRICTLY inside this.table

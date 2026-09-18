@@ -27,6 +27,7 @@ test.describe('Book Store Application - E2E Flow', () => {
 
   test('User can search, add, verify and delete a book from collection', async () => {
     await test.step('Login to the system', async () => {
+      // expected that navidate will have some parameter e.g. loginPage.navigate("MainPage") or loginPage.navigate("LoginPage") to make it more flexible;
       await loginPage.navigate();
       await loginPage.login(username, password);
     });
@@ -46,7 +47,8 @@ test.describe('Book Store Application - E2E Flow', () => {
     });
 
     await test.step('Delete book from collection and confirm removal', async () => {
-      const bookRow = profilePage.table.getRowByTitle(targetBook);
+      
+      bookRow = profilePage.table.getRowByTitle(targetBook);
       await profilePage.table.deleteBookByTitle(targetBook);
       await profilePage.confirmDeleteModalButton.click();
       await profilePage.verifyElementVisibility(bookRow, false);
@@ -55,6 +57,7 @@ test.describe('Book Store Application - E2E Flow', () => {
 
 test('User can clear the entire book collection from the profile', async () => {
     await test.step('Login to the system', async () => {
+      //
       await loginPage.navigate();
       await loginPage.login(username, password);
     });
@@ -64,6 +67,7 @@ test('User can clear the entire book collection from the profile', async () => {
       await bookStorePage.search.search(targetBook);
       await bookStorePage.table.clickBookTitle(targetBook);
       await bookStorePage.addCurrentBookToCollection();
+      //in this step only action no validations that action perform well ??? - for discuss
     });
 
     await test.step('Go to profile and use the bulk delete feature', async () => {
@@ -80,6 +84,7 @@ test('User can clear the entire book collection from the profile', async () => {
   test('User can filter books using search in the Book Store', async () => {
 
     await test.step('Open book store directly (guest user)', async () => {
+      //
       await bookStorePage.navigate();
     });
 
@@ -99,6 +104,7 @@ test('User can clear the entire book collection from the profile', async () => {
   test('Search for a non-existent book returns empty results', async () => {
 
     await test.step('Open book store', async () => {
+      //
       await bookStorePage.navigate();
     });
 
@@ -114,6 +120,7 @@ test('User can clear the entire book collection from the profile', async () => {
 
   test('User can open book details and return back to the store', async () => {
     await test.step('Open book store', async () => {
+      // the same as previous
       await bookStorePage.navigate();
     });
 
