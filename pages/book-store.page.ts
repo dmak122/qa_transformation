@@ -27,7 +27,7 @@ export class BookStorePage extends BasePage {
   // looks like this is a bad habbit to hardcode the URL in the page object, it would be better to go as manual user goes
   // Opens book store page directly
   async navigate(): Promise<void> {
-    await this.page.goto('https://demoqa.com/books');
+    await this.page.goto('/books');
   }
 
   // Adds currently opened book to collection and handles native browser alertf
