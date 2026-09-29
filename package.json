@@ -3,7 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:auth": "playwright test --grep @auth",
+    "test:guest": "playwright test --grep @guest",
+    "test:api": "playwright test --grep @api",
+    "test:ui": "playwright test --grep @ui",
+    "test:no-api": "playwright test --grep-invert @api"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

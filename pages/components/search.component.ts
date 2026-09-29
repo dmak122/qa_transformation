@@ -1,5 +1,8 @@
 import { Locator, Page } from '@playwright/test';
 
+/**
+ * Reusable component representing search box interactions across pages.
+ */
 export class SearchComponent {
   readonly page: Page;
   readonly searchInput: Locator;
@@ -10,13 +13,22 @@ export class SearchComponent {
     this.searchInput = page.locator('#searchBox');
   }
 
-  // Fill up the field
-  async search(query: string) {
+  /**
+   * Fills the search input field with the provided search query.
+   * 
+   * @param {string} query - The search keyword or title to filter by
+   * @returns {Promise<void>}
+   */
+  async search(query: string): Promise<void> {
     await this.searchInput.fill(query);
   }
 
-  // Clean up the field
-  async clear() {
+  /**
+   * Clears all text from the search input field.
+   * 
+   * @returns {Promise<void>}
+   */
+  async clear(): Promise<void> {
     await this.searchInput.clear();
   }
 }

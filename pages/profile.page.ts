@@ -3,6 +3,9 @@ import { BasePage } from './basepage';
 import { SearchComponent } from './components/search.component';
 import { TableComponent } from './components/table.component';
 
+/**
+ * Page Object representing the User Profile page functionality.
+ */
 export class ProfilePage extends BasePage {
   // Reusable components
   readonly search: SearchComponent;
@@ -24,13 +27,25 @@ export class ProfilePage extends BasePage {
     this.confirmDeleteModalButton = page.locator('#closeSmallModal-ok');
   }
 
+<<<<<<< HEAD
+  /**
+   * Navigates directly to the User Profile page URL.
+   * 
+   * @returns {Promise<void>}
+   */
+=======
   // Opens profile page directly
   //
+>>>>>>> a2ab41a6cdfdbeada4ab93b93f4b24b8acc48e16
   async navigate(): Promise<void> {
     await this.page.goto('/profile');
   }
 
-  // Deletes all books from user collection via confirmation modal
+  /**
+   * Triggers bulk deletion of all books in the user's collection and confirms via modal dialog.
+   * 
+   * @returns {Promise<void>}
+   */
   async deleteAllBooks(): Promise<void> {
     // Open confirmation modal
     await this.deleteAllBooksButton.scrollIntoViewIfNeeded();
