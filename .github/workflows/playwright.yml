@@ -24,8 +24,15 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright tests
-      run: npx playwright test
+    # Run fast @smoke tests on Pull Requests
+    - name: Run Playwright Smoke Tests
+      if: github.event_name == 'pull_request'
+      run: npm run test:smoke
+
+    # Run full test suite on branch pushes
+    - name: Run Full Playwright Test Suite
+      if: github.event_name == 'push'
+      run: npm run test
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}

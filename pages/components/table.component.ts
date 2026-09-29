@@ -1,5 +1,8 @@
 import { Locator, Page } from '@playwright/test';
 
+/**
+ * Component representing table interactions for books across the application.
+ */
 export class TableComponent {
   readonly page: Page;
   readonly table: Locator;
@@ -15,18 +18,33 @@ export class TableComponent {
     this.rows = this.table.locator('tbody tr');
   }
 
-  // Returns locator for the table row containing the target book title
+  /**
+   * Returns locator for the table row containing the target book title.
+   * 
+   * @param {string} title - Target book title
+   * @returns {Locator} Locator of the filtered table row
+   */
   getRowByTitle(title: string): Locator {
     return this.rows.filter({ hasText: title });
   }
 
-  // Clicks on the title link specifically inside the filtered row
+  /**
+   * Clicks on the title link specifically inside the filtered row.
+   * 
+   * @param {string} title - Target book title to click
+   * @returns {Promise<void>}
+   */
   async clickBookTitle(title: string): Promise<void> {
     const row = this.getRowByTitle(title);
     await row.getByRole('link', { name: title }).click();
   }
 
-// Clicks delete icon inside the specific row (for Profile page)
+  /**
+   * Clicks delete icon inside the specific row (for Profile page).
+   * 
+   * @param {string} title - Target book title to delete
+   * @returns {Promise<void>}
+   */
   async deleteBookByTitle(title: string): Promise<void> {
     const row = this.getRowByTitle(title);
     

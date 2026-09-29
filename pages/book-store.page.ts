@@ -3,6 +3,9 @@ import { BasePage } from './basepage';
 import { SearchComponent } from './components/search.component';
 import { TableComponent } from './components/table.component';
 
+/**
+ * Page Object representing the Book Store page and book details view.
+ */
 export class BookStorePage extends BasePage {
   // Reusable components
   readonly search: SearchComponent;
@@ -24,12 +27,20 @@ export class BookStorePage extends BasePage {
     this.backToStoreButton = page.getByRole('button', { name: 'Back To Book Store' });
   }
 
-  // Opens book store page directly
+  /**
+   * Navigates directly to the Book Store page URL.
+   * 
+   * @returns {Promise<void>}
+   */
   async navigate(): Promise<void> {
     await this.page.goto('/books');
   }
 
-  // Adds currently opened book to collection and handles native browser alert
+  /**
+   * Adds the currently opened book to the user's collection and automatically accepts the native browser alert dialog.
+   * 
+   * @returns {Promise<void>}
+   */
   async addCurrentBookToCollection(): Promise<void> {
     // Set up dialog handler before triggering action
     this.page.once('dialog', async (dialog) => {

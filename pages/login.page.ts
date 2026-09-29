@@ -1,6 +1,9 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { BasePage } from './basepage';
 
+/**
+ * Page Object representing the Login Page functionality.
+ */
 export class LoginPage extends BasePage {
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
@@ -13,12 +16,21 @@ export class LoginPage extends BasePage {
     this.loginButton = page.locator('#login');
   }
 
-  // Opens login page directly
+  /**
+   * Navigates directly to the Login page URL.
+   * @returns {Promise<void>}
+   */
   async navigate(): Promise<void> {
     await this.page.goto('/login');
   }
 
-  // Performs user authentication flow
+  /**
+   * Performs the full user authentication flow and asserts successful login.
+   * 
+   * @param {string} username - User account username
+   * @param {string} password - User account password
+   * @returns {Promise<void>}
+   */
   async login(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
