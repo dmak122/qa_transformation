@@ -27,20 +27,29 @@ export class BookStorePage extends BasePage {
     this.backToStoreButton = page.getByRole('button', { name: 'Back To Book Store' });
   }
 
+<<<<<<< HEAD
   /**
    * Navigates directly to the Book Store page URL.
    * 
    * @returns {Promise<void>}
    */
+=======
+  // looks like this is a bad habbit to hardcode the URL in the page object, it would be better to go as manual user goes
+  // Opens book store page directly
+>>>>>>> a2ab41a6cdfdbeada4ab93b93f4b24b8acc48e16
   async navigate(): Promise<void> {
     await this.page.goto('/books');
   }
 
+<<<<<<< HEAD
   /**
    * Adds the currently opened book to the user's collection and automatically accepts the native browser alert dialog.
    * 
    * @returns {Promise<void>}
    */
+=======
+  // Adds currently opened book to collection and handles native browser alertf
+>>>>>>> a2ab41a6cdfdbeada4ab93b93f4b24b8acc48e16
   async addCurrentBookToCollection(): Promise<void> {
     // Set up dialog handler before triggering action
     this.page.once('dialog', async (dialog) => {

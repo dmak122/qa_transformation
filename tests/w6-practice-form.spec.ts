@@ -53,5 +53,6 @@ test.describe('Practice Form Validation', () => {
     await test.step('Submit form', async () => {
       await practiceFormPage.submit();
     });
+    //no verification steps
   });
 });
