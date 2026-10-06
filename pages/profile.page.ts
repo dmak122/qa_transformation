@@ -27,16 +27,11 @@ export class ProfilePage extends BasePage {
     this.confirmDeleteModalButton = page.locator('#closeSmallModal-ok');
   }
 
-<<<<<<< HEAD
   /**
    * Navigates directly to the User Profile page URL.
    * 
    * @returns {Promise<void>}
    */
-=======
-  // Opens profile page directly
-  //
->>>>>>> a2ab41a6cdfdbeada4ab93b93f4b24b8acc48e16
   async navigate(): Promise<void> {
     await this.page.goto('/profile');
   }

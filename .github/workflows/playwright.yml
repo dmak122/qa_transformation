@@ -5,6 +5,7 @@ on:
     branches: [ main, validation_branch, new_branch ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch: # Запуск вручную (on demand)
 
 jobs:
   test:
@@ -29,9 +30,14 @@ jobs:
       if: github.event_name == 'pull_request'
       run: npm run test:smoke
 
-    # Run full test suite on branch pushes
-    - name: Run Full Playwright Test Suite
+    # Run @regression tests on branch pushes
+    - name: Run Playwright Regression Tests
       if: github.event_name == 'push'
+      run: npm run test:regression
+
+    # Run full test suite manually (on demand)
+    - name: Run Full Playwright Test Suite
+      if: github.event_name == 'workflow_dispatch'
       run: npm run test
 
     - uses: actions/upload-artifact@v4
