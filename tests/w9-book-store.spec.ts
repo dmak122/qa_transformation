@@ -61,7 +61,7 @@ test.describe('Book Store Application - E2E Flow', () => {
       });
     });
 
-    test('User can clear the entire book collection from the profile', { tag: '@regression' }, async () => {
+    test('User can clear the entire book collection from the profile', async () => {
       await test.step('Add a book to ensure the collection is not empty', async () => {
         await profilePage.clickSidebarMenu('Book Store');
         await bookStoreLocators.search.search(targetBook);
@@ -80,7 +80,7 @@ test.describe('Book Store Application - E2E Flow', () => {
       });
     });
 
-    test('User can clear the entire book collection from the profile via API', { tag: '@regression' }, async ({ page, request }) => {
+    test('User can clear the entire book collection from the profile via API', async ({ page, request }) => {
       await test.step('Add a book to ensure the collection is not empty', async () => {
         await profilePage.clickSidebarMenu('Book Store');
         await bookStoreLocators.search.search(targetBook);
