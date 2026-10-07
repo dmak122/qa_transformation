@@ -1,12 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
-import { BookStorePage } from '../pages/book-store.page';
 import { ProfilePage } from '../pages/profile.page';
+import { BookStoreLocators } from '../pages/book-store/book-store.locators';
+import { BookStoreActions } from '../pages/book-store/book-store.actions';
+import { BookStoreVerifications } from '../pages/book-store/book-store.verifications';
 
 test.describe('Book Store Application - E2E Flow', () => {
   let loginPage: LoginPage;
-  let bookStorePage: BookStorePage;
   let profilePage: ProfilePage;
+  let bookStoreLocators: BookStoreLocators;
+  let bookStoreActions: BookStoreActions;
+  let bookStoreVerifications: BookStoreVerifications;
 
   // Credentials and test data
   const username = 'BookLover1';
@@ -16,11 +20,13 @@ test.describe('Book Store Application - E2E Flow', () => {
   const otherBookTitle = 'Git Pocket Guide';
   const nonExistentBook = 'NonExistentBook12345';
 
-  // Initialize Page Objects before each test run
+  // Initialize Page Objects and layers before each test run
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    bookStorePage = new BookStorePage(page);
     profilePage = new ProfilePage(page);
+    bookStoreLocators = new BookStoreLocators(page);
+    bookStoreActions = new BookStoreActions(bookStoreLocators);
+    bookStoreVerifications = new BookStoreVerifications(bookStoreLocators);
   });
 
   // -------------------------------------------------------------
@@ -34,10 +40,10 @@ test.describe('Book Store Application - E2E Flow', () => {
 
     test('User can search, add, verify and delete a book from collection', { tag: '@smoke' }, async () => {
       await test.step('Search and add book to collection', async () => {
-        await bookStorePage.clickSidebarMenu('Book Store');
-        await bookStorePage.locators.search.search(targetBook);
-        await bookStorePage.locators.table.clickBookTitle(targetBook);
-        await bookStorePage.actions.addCurrentBookToCollection();
+        await profilePage.clickSidebarMenu('Book Store');
+        await bookStoreLocators.search.search(targetBook);
+        await bookStoreLocators.table.clickBookTitle(targetBook);
+        await bookStoreActions.addCurrentBookToCollection();
       });
 
       await test.step('Verify book exists in Profile collection', async () => {
@@ -57,10 +63,10 @@ test.describe('Book Store Application - E2E Flow', () => {
 
     test('User can clear the entire book collection from the profile', { tag: '@regression' }, async () => {
       await test.step('Add a book to ensure the collection is not empty', async () => {
-        await bookStorePage.clickSidebarMenu('Book Store');
-        await bookStorePage.locators.search.search(targetBook);
-        await bookStorePage.locators.table.clickBookTitle(targetBook);
-        await bookStorePage.actions.addCurrentBookToCollection();
+        await profilePage.clickSidebarMenu('Book Store');
+        await bookStoreLocators.search.search(targetBook);
+        await bookStoreLocators.table.clickBookTitle(targetBook);
+        await bookStoreActions.addCurrentBookToCollection();
       });
 
       await test.step('Go to profile and use the bulk delete feature', async () => {
@@ -76,10 +82,10 @@ test.describe('Book Store Application - E2E Flow', () => {
 
     test('User can clear the entire book collection from the profile via API', { tag: '@regression' }, async ({ page, request }) => {
       await test.step('Add a book to ensure the collection is not empty', async () => {
-        await bookStorePage.clickSidebarMenu('Book Store');
-        await bookStorePage.locators.search.search(targetBook);
-        await bookStorePage.locators.table.clickBookTitle(targetBook);
-        await bookStorePage.actions.addCurrentBookToCollection();
+        await profilePage.clickSidebarMenu('Book Store');
+        await bookStoreLocators.search.search(targetBook);
+        await bookStoreLocators.table.clickBookTitle(targetBook);
+        await bookStoreActions.addCurrentBookToCollection();
       });
 
       await test.step('Clear collection via API request', async () => {
@@ -112,53 +118,53 @@ test.describe('Book Store Application - E2E Flow', () => {
   test.describe('Guest User Search & Catalog Flow', () => {
     test('User can filter books using search in the Book Store', { tag: '@smoke' }, async () => {
       await test.step('Open book store directly', async () => {
-        await bookStorePage.actions.navigate();
+        await bookStoreActions.navigate();
       });
 
       await test.step('Use search component to filter the table', async () => {
-        await bookStorePage.locators.search.search(searchKeyword);
+        await bookStoreLocators.search.search(searchKeyword);
       });
 
       await test.step('Verify target book is visible and other books are hidden', async () => {
-        const matchingRow = bookStorePage.locators.table.getRowByTitle(searchKeyword);
-        const hiddenRow = bookStorePage.locators.table.getRowByTitle(otherBookTitle);
+        const matchingRow = bookStoreLocators.table.getRowByTitle(searchKeyword);
+        const hiddenRow = bookStoreLocators.table.getRowByTitle(otherBookTitle);
 
-        await bookStorePage.verifyElementVisibility(matchingRow, true);
-        await bookStorePage.verifyElementVisibility(hiddenRow, false);
+        await profilePage.verifyElementVisibility(matchingRow, true);
+        await profilePage.verifyElementVisibility(hiddenRow, false);
       });
     });
 
     test('Search for a non-existent book returns empty results', { tag: '@regression' }, async () => {
       await test.step('Open book store', async () => {
-        await bookStorePage.actions.navigate();
+        await bookStoreActions.navigate();
       });
 
       await test.step('Search for something that does not exist', async () => {
-        await bookStorePage.locators.search.search(nonExistentBook);
+        await bookStoreLocators.search.search(nonExistentBook);
       });
 
       await test.step('Verify the table row for this book is hidden', async () => {
-        const row = bookStorePage.locators.table.getRowByTitle(nonExistentBook);
-        await bookStorePage.verifyElementVisibility(row, false);
+        const row = bookStoreLocators.table.getRowByTitle(nonExistentBook);
+        await profilePage.verifyElementVisibility(row, false);
       });
     });
 
     test('User can open book details and return back to the store', { tag: '@regression' }, async () => {
       await test.step('Open book store', async () => {
-        await bookStorePage.actions.navigate();
+        await bookStoreActions.navigate();
       });
 
       await test.step('Click on the book title to view details', async () => {
-        await bookStorePage.locators.table.clickBookTitle(targetBook);
+        await bookStoreLocators.table.clickBookTitle(targetBook);
       });
 
       await test.step('Verify book details view is displayed', async () => {
-        await bookStorePage.verifications.verifyBackToStoreButtonVisible();
+        await bookStoreVerifications.verifyBackToStoreButtonVisible();
       });
 
       await test.step('Navigate back to the store and verify table is visible', async () => {
-        await bookStorePage.actions.clickBackToStore();
-        await bookStorePage.verifyElementVisibility(bookStorePage.locators.table.table, true);
+        await bookStoreActions.clickBackToStore();
+        await profilePage.verifyElementVisibility(bookStoreLocators.table.table, true);
       });
     });
   });
