@@ -13,8 +13,6 @@ export class BookStoreVerifications {
 
   /**
    * Verifies that the 'Back To Book Store' button is visible on the page.
-   * 
-   * @returns {Promise<void>}
    */
   async verifyBackToStoreButtonVisible(): Promise<void> {
     await expect(this.locators.backToStoreButton).toBeVisible();

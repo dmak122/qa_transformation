@@ -16,8 +16,7 @@ export class SearchComponent {
   /**
    * Fills the search input field with the provided search query.
    * 
-   * @param {string} query - The search keyword or title to filter by
-   * @returns {Promise<void>}
+   * @param query - The search keyword or title to filter by
    */
   async search(query: string): Promise<void> {
     await this.searchInput.fill(query);
@@ -26,7 +25,6 @@ export class SearchComponent {
   /**
    * Clears all text from the search input field.
    * 
-   * @returns {Promise<void>}
    */
   async clear(): Promise<void> {
     await this.searchInput.clear();
